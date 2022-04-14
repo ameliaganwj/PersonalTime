@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script> -->
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js'></script>
+
+    <script>
+
+    var socket = io();
+
+    socket.on('data', function(data) {
+        console.log(data);
+        document.getElementById('sample').style.opacity = data+"%"; 
+    });
+
+    </script>
+
+    <style>
+
+      #sample {
+        background-color: red;
+        width: 300px;
+        height: 300px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <h1>Personal Time</h1>
+    <div id="sample"></div>
+
+  </body>
+</html>
