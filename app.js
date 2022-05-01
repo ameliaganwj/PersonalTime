@@ -1,5 +1,7 @@
 var http = require('http');
 var fs = require('fs');
+
+//load paths internally 
 var index = fs.readFileSync('public/index.html');
 var javascript = fs.readFileSync('public/mySketch.js');
 var SerialPort = require('serialport');
@@ -18,6 +20,9 @@ var port = new SerialPort('COM6',{
 });
 
 port.pipe(parser);
+
+//send request, return responses based on req 
+//html response status code - 200 
 
 var app = http.createServer(function(req,res){
   if(req.url == '/'){

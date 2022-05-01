@@ -5,9 +5,22 @@ let segmentation;
 let opacity = 0;
 let newVariable;
 
+// var constraints = {
+//     audio: false,
+//     video: {
+//       facingMode: {
+//         exact: "user"
+//       }
+//     }    
+//     //video: {
+//       //facingMode: "user" or "environment"
+//     //} 
+//   };
+
 socket.on('data', function (data) {
-    document.getElementById('sample').style.opacity = data / 100;
-    opacity = data / 100;
+    document.getElementById('sample').style.opacity = data;
+    opacity = data;
+    console.log(data);
     // document.getElementById('sample').innerHTML = data;
 });
 
@@ -22,13 +35,17 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    //   canvas.position(0,0);
-    //   canvas.style('z-index','-1');
-    //   canvas.parent('canvasContainer');
-    // load up your video
+
     video = createCapture(VIDEO, videoReady);
-    video.size(width, height);
-    video.hide();
+    // video = createCapture(constraints, videoReady);
+
+    video.size(windowWidth, windowHeight);
+    video.position (0,0);
+    video.style ('z-index','-1');
+
+    // video.etl.setAttribute('playsinline', '');
+
+    // video.hide();
 }
 
 function videoReady() {
@@ -36,18 +53,34 @@ function videoReady() {
 }
 
 function draw() {
-    if (opacity <= 0.5) {
-        background('rgba(255,255,255, 0.2)');
+    //super not focus
+    if (opacity <= 20) {
         if (segmentation) {
-            image(segmentation.backgroundMask, 0, 0, width, height);
+        image(segmentation.personMask, 0, 0, windowWidth, windowHeight);
         }
-    } else if (opacity >= 0.6) {
-        background('rgba(255,255,255, 0.2)');
-    } else {
-        background('rgba(255,255,255, 0.2)');
     }
 
+    //not focus
+    else if (opacity >= 20 && opacity <=40) {
+        if (segmentation) {
+        image(segmentation.backgroundMask, 0, 0, windowWidth, windowHeight);
+        }
+    }
 
+    //focus = normal mode
+    else if (opacity >=40 && opacity <=80) {
+        image(video, 0, 0, windowWidth, windowHeight);
+        
+    }
+        
+    //super focus - video works 
+     else if (opacity >=80) {
+        background('rgba(255,255,255, 0.2)');
+        if (segmentation) {
+            image(segmentation.backgroundMask, 0, 0, windowWidth, windowHeight);
+            }
+        // clear();
+    }
 
     function mousePressed() {
         save('myCanvas.png');
